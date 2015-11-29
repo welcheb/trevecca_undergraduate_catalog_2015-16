@@ -16,13 +16,39 @@ Python script to generate HTML of Trevecca Undergraduate Catalog 2015-16
 1. Clickable hyperlinks
 2. Table of Contents sidebar
 3. Background colors
+4. Table of Contents preface (optional)
 
 ## Steps to use `wkhtmltopdf`
 1. Download and install static version of `wkhtmltopdf` from [http://wkhtmltopdf.org/downloads.html](http://wkhtmltopdf.org/downloads.html)
-2. Execute `wkhtmltopdf`
 
-~~~~
-wkhtmltopdf trevecca.html trevecca_wkhtmltopdf.pdf
-~~~~
+2. Execute `wkhtmltopdf` to generate basic (TOC is saved to an .xml file)
+
+	~~~~
+wkhtmltopdf --footer-right "[page]" --dump-outline trevecca_wkhtmltopdf_toc.xml trevecca.html trevecca_wkhtmltopdf.pdf
+	~~~~
+
+3. Dump `wkhtmltopdf` TOC XSL style sheet
+
+	~~~~
+wkhtmltopdf --dump-default-toc-xsl > wkhtmltopdf_toc.xsl
+	~~~~
+	
+4. Transform `trevecca_wkhtmltopdf_toc.xml` to `trevecca_wkhtmltopdf_toc.html` with `xsltproc`
+
+	~~~~
+xsltproc wkhtmltopdf_toc.xsl trevecca_wkhtmltopdf_toc.xml > trevecca_wkhtmltopdf_toc.html 
+	~~~~
+	
+5. Convert trevecca_wkhtmltopdf_toc.html to PDF
+
+	~~~~
+wkhtmltopdf trevecca_wkhtmltopdf_toc.html trevecca_wkhtmltopdf_toc.pdf
+	~~~~
+
+6. Combine PDF files, e.g. on Mac OS X
+
+	~~~~
+/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py --output trevecca_wkhtmltopdf_with_TOC.pdf trevecca_wkhtmltopdf_toc.pdf trevecca_wkhtmltopdf.pdf
+	~~~~
 
 
