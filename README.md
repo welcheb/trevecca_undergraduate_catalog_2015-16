@@ -1,6 +1,11 @@
 # trevecca_undergraduate_catalog_2015-16
 Python script to generate HTML of Trevecca Undergraduate Catalog 2015-16
 
+## Run `trevecca.sh` to execute all steps below or execute commands one at a time
+~~~~
+./trevecca.sh
+~~~~
+
 ## Run `trevecca.py` to generate `trevecca.html`
 ~~~~
 ./trevecca.py > trevecca.html
@@ -21,7 +26,7 @@ Python script to generate HTML of Trevecca Undergraduate Catalog 2015-16
 ## Steps to use `wkhtmltopdf`
 1. Download and install static version of `wkhtmltopdf` from [http://wkhtmltopdf.org/downloads.html](http://wkhtmltopdf.org/downloads.html)
 
-2. Execute `wkhtmltopdf` to generate basic (TOC is saved to an .xml file)
+2. Execute `wkhtmltopdf` to generate `trevecca_wkhtmltopdf.pdf` (TOC is saved to an .xml file)
 
 	~~~~
 wkhtmltopdf --footer-right "[page]" --dump-outline trevecca_wkhtmltopdf_toc.xml trevecca.html trevecca_wkhtmltopdf.pdf

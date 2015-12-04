@@ -23,41 +23,46 @@ print '<html class="no-js" lang="en-US" itemscope itemtype="http://schema.org/Co
 
 # loop over programs
 for program_idx in range(len(program_names)):
-	program_page_url = parent_domain + program_links[program_idx]
-	program_page = requests.get(program_page_url)
-	program_tree = html.fromstring(program_page.content)
-	program_div = program_tree.xpath('//div[@id="main"]')
 
-	if program_idx==0:
-		print '<head>'
-		print '<title>' + parent_domain + '</title>'	
+	# skip display of Four-Year plans
+	if program_names[program_idx].find("Four-Year")<0 and program_names[program_idx].find("Four Year")<0 and program_names[program_idx].find("Five-Year")<0 and program_names[program_idx].find("Program of Study")<0: 
 
-		# css style links	
-		program_style_links = program_tree.xpath('//head/link')
-		for program_style_link in program_style_links:	
-			print(etree.tostring(program_style_link, pretty_print=True).replace('href="', 'href="' + parent_domain))
+		program_page_url = parent_domain + program_links[program_idx]
+		program_page = requests.get(program_page_url)
+		program_tree = html.fromstring(program_page.content)
+		program_div = program_tree.xpath('//div[@id="main"]')
 
-		# add page breaks before H1 (program names)
-		print '<style type="text/css">'
-		print '@media print {'
-		print '    h1:not([name=first]){page-break-before: always;}'
-		print '}'
-		print '@media screen {'
-		print '    h1:not([name=first]){page-break-before: always;}'
-		print '}'
-		print '</style>'
+		if program_idx==0:
+			print '<head>'
+			print '<title>' + parent_domain + '</title>'	
 
-		print '</head>'
-		print '<body>'
+			# css style links	
+			program_style_links = program_tree.xpath('//head/link')
+			for program_style_link in program_style_links:	
+				print(etree.tostring(program_style_link, pretty_print=True).replace('href="', 'href="' + parent_domain))
 
-		print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('<h1>', '<h1 name="first">', 1))
+			# add page breaks before H1 (program names)
+			print '<style type="text/css">'
+			print '@media print {'
+			print '    h1:not([name=first]){page-break-before: always;}'
+			print '}'
+			print '@media screen {'
+			print '    h1:not([name=first]){page-break-before: always;}'
+			print '}'
+			print '</style>'
 
-	else:
-		print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain))
+			print '</head>'
+			print '<body>'
 
-	# uncomment for quicker debug
-	#if program_idx>2:
-	#	break
+			print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('<h1>', '<h1 name="first">', 1))
+
+		else:
+
+			print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain))
+
+		# uncomment for quicker debug
+		#if program_idx>10:
+		#	break
 
 # print closing of body and page
 print '</body>'
