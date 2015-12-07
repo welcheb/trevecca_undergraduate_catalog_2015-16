@@ -56,4 +56,7 @@ wkhtmltopdf trevecca_wkhtmltopdf_toc.html trevecca_wkhtmltopdf_toc.pdf
 /System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py --output trevecca_wkhtmltopdf_with_TOC.pdf trevecca_wkhtmltopdf_toc.pdf trevecca_wkhtmltopdf.pdf
 	~~~~
 
-
+## Minors also available! Run `trevecca_minors.sh` to execute all steps to generate documents analogous to those above, e.g. `trevecca_minors_wkhtmltopdf.pdf`
+~~~~
+./trevecca_minors.sh
+~~~~
