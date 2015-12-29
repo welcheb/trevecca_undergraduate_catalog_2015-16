@@ -11,7 +11,7 @@ parent_domain = 'http://trevecca.smartcatalogiq.com'
 # parent page showing the porgrams by schools and departments
 parent_page_url = parent_domain + '/en/2015-2016/University-Catalog/Programs-by-Schools-and-Departments'
 parent_page = requests.get(parent_page_url)
-parent_tree = html.fromstring(parent_page.content)
+parent_tree = html.fromstring(parent_page.content.replace('&#13;',''))
 
 # get list of potential department names and potential department URLs
 department_names = parent_tree.xpath('//div[@id="main"]//p[@class="sc-BodyTextIndented"]//a//text()')
@@ -35,7 +35,7 @@ for department_idx in range(len(department_names)):
 
 		department_page_url = parent_domain + department_links[department_idx]
 		department_page = requests.get(department_page_url)
-		department_tree = html.fromstring(department_page.content)
+		department_tree = html.fromstring(department_page.content.replace('&#13;',''))
 
 		# find potential links to minors
 		minor_names = department_tree.xpath('//div[@id="main"]//a//text()')
@@ -48,7 +48,7 @@ for department_idx in range(len(department_names)):
 
 				minor_page_url = parent_domain + minor_links[minor_idx]
         		        minor_page = requests.get(minor_page_url)
-                		minor_tree = html.fromstring(minor_page.content)
+                		minor_tree = html.fromstring(minor_page.content.replace('&#13;',''))
 
 				# find potential links to minors (layer 2)
                 		minor2_names = minor_tree.xpath('//div[@id="main"]//a//text()')
@@ -61,7 +61,7 @@ for department_idx in range(len(department_names)):
 		
 						minor2_page_url = parent_domain + minor2_links[minor2_idx]
                 		                minor2_page = requests.get(minor2_page_url)
-		                                minor2_tree = html.fromstring(minor2_page.content)
+		                                minor2_tree = html.fromstring(minor2_page.content.replace('&#13;',''))
 
 						minor2_div = minor2_tree.xpath('//div[@id="main"]')
 
@@ -74,7 +74,7 @@ for department_idx in range(len(department_names)):
 							# css style links	
 							minor2_style_links = minor2_tree.xpath('//head/link')
 							for minor2_style_link in minor2_style_links:	
-								print(etree.tostring(minor2_style_link, pretty_print=True).replace('href="', 'href="' + parent_domain))
+								print(etree.tostring(minor2_style_link, pretty_print=True).replace('href="/', 'href="' + parent_domain + '/'))
 
 							# add page breaks before H1 (program names)
 							print '<style type="text/css">'
@@ -94,16 +94,16 @@ for department_idx in range(len(department_names)):
 							print '<div id="main"><h1 name="first">' + department_names[department_idx] + '</h1></div>'	
 							first_minor_found = 1
 	
-							print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') ).replace('<h2>','<h2 name="first">',1)
+							print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="/', 'href="' + parent_domain + '/').replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') ).replace('<h2>','<h2 name="first">',1)
 
 						else:
 
 							if first_minor_found==0:
 								print '<div id="main"><h1>' + department_names[department_idx] + '</h1></div>'	
 								first_minor_found = 1
-								print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') ).replace('<h2>','<h2 name="first">',1)
+								print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="/', 'href="' + parent_domain + '/').replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') ).replace('<h2>','<h2 name="first">',1)
 							else:
-								print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') )
+								print( etree.tostring(minor2_div[0],pretty_print=True).replace('href="/', 'href="' + parent_domain + '/').replace('h4','h5').replace('h3','h4').replace('h2','h3').replace('h1','h2') )
 # print closing of body and page
 print '</body>'
 print '</html>'

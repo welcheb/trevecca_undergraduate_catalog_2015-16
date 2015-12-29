@@ -11,7 +11,7 @@ parent_domain = 'http://trevecca.smartcatalogiq.com'
 # parent page showing the porgrams of study
 parent_page_url = parent_domain + '/en/2015-2016/University-Catalog/Programs-of-Study'
 parent_page = requests.get(parent_page_url)
-parent_tree = html.fromstring(parent_page.content)
+parent_tree = html.fromstring(parent_page.content.replace('&#13;',''))
 
 # get list of program names and program URLs
 program_names = parent_tree.xpath('//div[@id="sc-program-links"]//a//text()')
@@ -29,7 +29,7 @@ for program_idx in range(len(program_names)):
 
 		program_page_url = parent_domain + program_links[program_idx]
 		program_page = requests.get(program_page_url)
-		program_tree = html.fromstring(program_page.content)
+		program_tree = html.fromstring(program_page.content.replace('&#13;',''))
 		program_div = program_tree.xpath('//div[@id="main"]')
 
 		if program_idx==0:
@@ -39,7 +39,7 @@ for program_idx in range(len(program_names)):
 			# css style links	
 			program_style_links = program_tree.xpath('//head/link')
 			for program_style_link in program_style_links:	
-				print(etree.tostring(program_style_link, pretty_print=True).replace('href="', 'href="' + parent_domain))
+				print(etree.tostring(program_style_link, pretty_print=True).replace('href="/', 'href="' + parent_domain + '/'))
 
 			# add page breaks before H1 (program names)
 			print '<style type="text/css">'
@@ -54,11 +54,11 @@ for program_idx in range(len(program_names)):
 			print '</head>'
 			print '<body>'
 
-			print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain).replace('<h1>', '<h1 name="first">', 1))
+			print(etree.tostring(program_div[0],pretty_print=True).replace('href="/', 'href="' + parent_domain + '/').replace('<h1>', '<h1 name="first">', 1))
 
 		else:
 
-			print(etree.tostring(program_div[0],pretty_print=True).replace('href="', 'href="' + parent_domain))
+			print(etree.tostring(program_div[0],pretty_print=True).replace('href="/', 'href="' + parent_domain + '/'))
 
 		# uncomment for quicker debug
 		#if program_idx>10:
