@@ -60,3 +60,8 @@ wkhtmltopdf trevecca_wkhtmltopdf_toc.html trevecca_wkhtmltopdf_toc.pdf
 ~~~~
 ./trevecca_minors.sh
 ~~~~
+
+## Combination of Majors and Minors also available! Run `trevecca_combo.sh` to execute all steps to generate documents analogous to those above, e.g. `trevecca_combo_wkhtmltopdf.pdf`
+~~~~
+./trevecca_combo.sh
+~~~~
